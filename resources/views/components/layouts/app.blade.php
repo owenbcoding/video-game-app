@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=
     , initial-scale=1.0">
     <title>Game-App</title>
+    <link rel="shortcut icon" href="{{ Vite::asset('resources/img/favicon.png') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -13,7 +14,7 @@
     <header class="border-b border-gray-800">
         <nav class="container mx-auto flex max-w-7xl items-center justify-between px-4 py-6">
             <!-- Left Section: Logo & Navigation -->
-            <div class="flex items-center space-x-8">
+            <div class="flex flex-col lg:flex-row items-center space-x-8">
                 <a href="{{ route('index') }}">
                     <p class="font-bold text-2xl">Game-App</p>
                 </a>
