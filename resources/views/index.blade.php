@@ -285,7 +285,7 @@
                         <div class="ml-12">
                             <a href="#"
                                 class="block text-base font-semibold leading-tight hover:text-gray-400 mt-4">
-                                Final Fantasy VII Remake
+                                Doom Eternal
                             </a>
                             <div class="text-gray-400 mt-1">Play Station 5</div>
                             <p class="mt-6 text-gray-400 hidden lg:block">
@@ -313,7 +313,7 @@
                         <div class="ml-12">
                             <a href="#"
                                 class="block text-base font-semibold leading-tight hover:text-gray-400 mt-4">
-                                Final Fantasy VII Remake
+                                Animal-crossing
                             </a>
                             <div class="text-gray-400 mt-1">Play Station 5</div>
                             <p class="mt-6 text-gray-400 hidden lg:block">
