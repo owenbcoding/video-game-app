@@ -12,13 +12,13 @@
 
 <body class="bg-gray-900 text-white">
     <header class="border-b border-gray-800">
-        <nav class="container mx-auto flex max-w-7xl items-center justify-between px-4 py-6">
+        <nav class="container mx-auto flex flex-col lg:flex-row max-w-7xl items-center justify-between px-4 py-6">
             <!-- Left Section: Logo & Navigation -->
             <div class="flex flex-col lg:flex-row items-center space-x-8">
                 <a href="{{ route('index') }}">
                     <p class="font-bold text-2xl">Game-App</p>
                 </a>
-                <ul class="flex space-x-8">
+                <ul class="flex lg:ml-16 space-x-8">
                     <li><a href="/games" class="hover:text-gray-400">Games</a></li>
                     <li><a href="/reviews" class="hover:text-gray-400">Reviews</a></li>
                     <li><a href="/coming-soon" class="hover:text-gray-400">Coming Soon</a></li>
