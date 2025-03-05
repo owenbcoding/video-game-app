@@ -18,7 +18,7 @@
                 <a href="{{ route('index') }}">
                     <p class="font-bold text-2xl">Game-App</p>
                 </a>
-                <ul class="flex lg:ml-16 space-x-8">
+                <ul class="flex lg:ml-16 space-x-8 mt-6 lg:mt-0">
                     <li><a href="/games" class="hover:text-gray-400">Games</a></li>
                     <li><a href="/reviews" class="hover:text-gray-400">Reviews</a></li>
                     <li><a href="/coming-soon" class="hover:text-gray-400">Coming Soon</a></li>
@@ -26,7 +26,7 @@
             </div>
         
             <!-- Right Section: Search & Avatar -->
-            <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-4 mt-6 lg:mt-0">
                 <div class="relative">
                     <input type="text" class="bg-gray-800 text-sm rounded-full pl-10 pr-3 py-1 w-64" placeholder="Search . . .">
                     <!-- Search Icon -->
@@ -40,7 +40,7 @@
             </div>
         </nav>
     </header>
-    <main>
+    <main class="py-8">
         {{ $slot }}
     </main>
     <footer class="border-t border-gray-800">
@@ -49,5 +49,4 @@
         </div>
     </footer>
 </body>
-
 </html>
