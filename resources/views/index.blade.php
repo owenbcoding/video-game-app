@@ -9,7 +9,7 @@
                 <div class="game mt-8">
                     <div class="relative inline-block">
                         <a href="#">
-                            <img src="{{ Str::replace('thumb', 'cover_big', $game['cover']['url']) }}" alt="game-cover"
+                            <img src="{{ Str::replace('thumb', 'cover_big', $game['cover']['url'] ?? '') }}" alt="game-cover"
                                 class="hover:opacity-75 transition ease-in-out duration-150 w-full">
                         </a>
 
@@ -45,7 +45,7 @@
                         <div class="game bg-gray-800 rounded-lg shadow-md flex px-6 py-6">
                             <div class="relative flex-none">
                                 <a href="#">
-                                    <img src="{{ Str::replace('thumb', 'cover_big', $game['cover']['url']) }}"
+                                    <img src="{{ Str::replace('thumb', 'cover_big', $game['cover']['url'] ?? '') }}"
                                         alt="game-cover"
                                         class="hover:opacity-75 transition ease-in-out duration-150 w-20 lg:w-48">
                                 </a>
@@ -86,7 +86,7 @@
                     <div class="most-anticipated-container space-y-10 mt-8">
                         <div class="game flex">
                             <a href="#">
-                                <img src="{{ Str::replace('thumb', 'cover_small', $game['cover']['url']) }}"
+                                <img src="{{ Str::replace('thumb', 'cover_small', $game['cover']['url'] ?? '') }}"
                                     alt="game-cover" class="hover:opacity-75 transition ease-in-out duration-150 w-16">
                             </a>
                             <div class="ml-4">
@@ -105,8 +105,8 @@
                     <div class="comming-soon-container space-y-10 mt-8">
                         <div class="game flex">
                             <a href="#">
-                                <img src="{{ Str::replace('thumb', 'cover_small', $game['cover']['url']) }}"
-                                    alt="game-cover" class="hover:opacity-75 transition ease-in-out duration-150 w-16">
+                                <img src="{{ Str::replace('thumb', 'cover_small', $game['cover']['url'] ?? '') }}"
+    alt="game-cover" class="hover:opacity-75 transition ease-in-out duration-150 w-16">
                             </a>
                             <div class="ml-4">
                                 <a href="#" class="hover:text-gray-300">{{ $game['name'] }}</a>
