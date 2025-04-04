@@ -36,7 +36,7 @@ class GamesController extends Controller
             & first_release_date > {$before}
             & first_release_date < {$after};
             sort rating desc;
-            limit 12;",
+            limit 11;",
             'text/plain'
         )
         ->post('https://api.igdb.com/v4/games')
