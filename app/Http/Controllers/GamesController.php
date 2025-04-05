@@ -26,40 +26,40 @@ class GamesController extends Controller
 
         $accessToken = $response->json()['access_token'];
 
-        $popularGames = Http::withHeaders([
-            'Client-ID' => env('IGDB_CLIENT_ID'),
-            'Authorization' => 'Bearer ' . $accessToken,
-        ])
-        ->withBody(
-            "fields name, cover.url, first_release_date, platforms.abbreviation, rating, summary;
-            where platforms = (48,49,130,6)
-            & first_release_date > {$before}
-            & first_release_date < {$after};
-            sort rating desc;
-            limit 11;",
-            'text/plain'
-        )
-        ->post('https://api.igdb.com/v4/games')
-        ->json();
+        // $popularGames = Http::withHeaders([
+        //     'Client-ID' => env('IGDB_CLIENT_ID'),
+        //     'Authorization' => 'Bearer ' . $accessToken,
+        // ])
+        // ->withBody(
+        //     "fields name, cover.url, first_release_date, platforms.abbreviation, rating, summary;
+        //     where platforms = (48,49,130,6)
+        //     & first_release_date > {$before}
+        //     & first_release_date < {$after};
+        //     sort rating desc;
+        //     limit 11;",
+        //     'text/plain'
+        // )
+        // ->post('https://api.igdb.com/v4/games')
+        // ->json();
 
         // dd($popularGames);
 
-        $recentlyReviewed = Http::withHeaders([
-            'Client-ID' => env('IGDB_CLIENT_ID'),
-            'Authorization' => 'Bearer ' . $accessToken,
-        ])
-            ->withBody(
-                "fields name, cover.url, first_release_date, platforms.abbreviation, rating, rating_count, summary;
-                where platforms = (48,49,130,6)
-                & first_release_date > {$before}
-                & first_release_date < {$current}
-                & rating_count > 5;
-                sort popularity desc;
-                limit 3;",
-                'text/plain'
-            )
-            ->post('https://api.igdb.com/v4/games')
-            ->json();
+        // $recentlyReviewed = Http::withHeaders([
+        //     'Client-ID' => env('IGDB_CLIENT_ID'),
+        //     'Authorization' => 'Bearer ' . $accessToken,
+        // ])
+        //     ->withBody(
+        //         "fields name, cover.url, first_release_date, platforms.abbreviation, rating, rating_count, summary;
+        //         where platforms = (48,49,130,6)
+        //         & first_release_date > {$before}
+        //         & first_release_date < {$current}
+        //         & rating_count > 5;
+        //         sort popularity desc;
+        //         limit 3;",
+        //         'text/plain'
+        //     )
+        //     ->post('https://api.igdb.com/v4/games')
+        //     ->json();
 
         // dd($recentlyReviewed);
 
@@ -100,8 +100,8 @@ class GamesController extends Controller
         // dd($comingSoon);
 
         return view('index', [
-            'popularGames' => $popularGames,
-            'recentlyReviewed' => $recentlyReviewed,
+            // 'popularGames' => $popularGames,
+            // 'recentlyReviewed' => $recentlyReviewed,
             'mostAnticipated' => $mostAnticipated,
             'comingSoon' => $comingSoon,
         ]);
