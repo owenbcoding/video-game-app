@@ -8,6 +8,7 @@
     <title>Game-App</title>
     <link rel="shortcut icon" href="{{ Vite::asset('resources/img/favicon.png') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @livewireStyles
 </head>
 
 <body class="bg-gray-900 text-white">
@@ -48,5 +49,6 @@
             Powered by <a href="#" class="underline hover:text-gray-400">IGDB API</a>
         </div>
     </footer>
+    @livewireScripts
 </body>
 </html>
