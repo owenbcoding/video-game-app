@@ -63,47 +63,47 @@ class GamesController extends Controller
 
         // dd($recentlyReviewed);
 
-        $mostAnticipated = Http::withHeaders([
-            'Client-ID' => env('IGDB_CLIENT_ID'),
-            'Authorization' => 'Bearer ' . $accessToken,
-        ])
-            ->withBody(
-                "fields name, cover.url, first_release_date, platforms.abbreviation, rating, rating_count, summary;
-                where platforms = (48,49,130,6)
-                & first_release_date > {$before}
-                & first_release_date < {$afterFourMonths}
-                & rating_count > 5;
-                sort popularity desc;
-                limit 3;",
-                'text/plain'
-            )
-            ->post('https://api.igdb.com/v4/games')
-            ->json();
+        // $mostAnticipated = Http::withHeaders([
+        //     'Client-ID' => env('IGDB_CLIENT_ID'),
+        //     'Authorization' => 'Bearer ' . $accessToken,
+        // ])
+        //     ->withBody(
+        //         "fields name, cover.url, first_release_date, platforms.abbreviation, rating, rating_count, summary;
+        //         where platforms = (48,49,130,6)
+        //         & first_release_date > {$before}
+        //         & first_release_date < {$afterFourMonths}
+        //         & rating_count > 5;
+        //         sort popularity desc;
+        //         limit 3;",
+        //         'text/plain'
+        //     )
+        //     ->post('https://api.igdb.com/v4/games')
+        //     ->json();
 
         // dd($mostAnticipated);
 
-        $comingSoon = Http::withHeaders([
-            'Client-ID' => env('IGDB_CLIENT_ID'),
-            'Authorization' => 'Bearer ' . $accessToken,
-        ])
-        ->withBody(
-            "fields name, cover.url, first_release_date, platforms.abbreviation, rating, summary;
-            where platforms = (48,49,130,6)
-            & first_release_date > {$current};
-            sort first_release_date asc;
-            limit 4;",
-            'text/plain'
-        )
-        ->post('https://api.igdb.com/v4/games')
-        ->json();
+        // $comingSoon = Http::withHeaders([
+        //     'Client-ID' => env('IGDB_CLIENT_ID'),
+        //     'Authorization' => 'Bearer ' . $accessToken,
+        // ])
+        // ->withBody(
+        //     "fields name, cover.url, first_release_date, platforms.abbreviation, rating, summary;
+        //     where platforms = (48,49,130,6)
+        //     & first_release_date > {$current};
+        //     sort first_release_date asc;
+        //     limit 4;",
+        //     'text/plain'
+        // )
+        // ->post('https://api.igdb.com/v4/games')
+        // ->json();
 
         // dd($comingSoon);
 
         return view('index', [
             // 'popularGames' => $popularGames,
             // 'recentlyReviewed' => $recentlyReviewed,
-            'mostAnticipated' => $mostAnticipated,
-            'comingSoon' => $comingSoon,
+            // 'mostAnticipated' => $mostAnticipated,
+            // 'comingSoon' => $comingSoon,
         ]);
     }
 
