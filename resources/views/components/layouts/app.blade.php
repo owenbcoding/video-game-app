@@ -46,7 +46,7 @@
     </main>
     <footer class="border-t border-gray-800">
         <div class="container mx-auto max-w-7xl px-4 py-6">
-            Powered by <a href="#" class="underline hover:text-gray-400">IGDB API</a>
+            Powered by <a href="https://api-docs.igdb.com/" class="underline hover:text-gray-400 " target="_blank">IGDB API</a>
         </div>
     </footer>
     @livewireScripts
