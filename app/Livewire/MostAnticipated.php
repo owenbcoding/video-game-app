@@ -22,18 +22,19 @@ class MostAnticipated extends Component
         $before = Carbon::now()->subMonths(2)->timestamp;
         $afterFourMonths = Carbon::now()->addMonths(4)->timestamp;
 
-        $response = Http::post('https://id.twitch.tv/oauth2/token', [
-            'client_id' => env('IGDB_CLIENT_ID'),
-            'client_secret' => env('IGDB_CLIENT_SECRET'),
-            'grant_type' => 'client_credentials',
-        ]);
+        // $response = Http::post('https://id.twitch.tv/oauth2/token', [
+        //     'client_id' => env('IGDB_CLIENT_ID'),
+        //     'client_secret' => env('IGDB_CLIENT_SECRET'),
+        //     'grant_type' => 'client_credentials',
+        // ]);
 
-        $accessToken = $response->json()['access_token'];
+        // $accessToken = $response->json()['access_token'];
 
-        $this->mostAnticipated = Http::withHeaders([
-            'Client-ID' => env('IGDB_CLIENT_ID'),
-            'Authorization' => 'Bearer ' . $accessToken,
-        ])
+        // $this->mostAnticipated = Http::withHeaders([
+        //     'Client-ID' => env('IGDB_CLIENT_ID'),
+        //     'Authorization' => 'Bearer ' . $accessToken,
+        // ])
+        $this->mostAnticipated = Http::withHeaders(config('services.igdb'))
             ->withBody(
                 "fields name, cover.url, first_release_date, platforms.abbreviation, rating, rating_count, summary;
                 where platforms = (48,49,130,6)

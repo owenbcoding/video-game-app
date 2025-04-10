@@ -20,25 +20,19 @@ class PopularGames extends Component
 
     public function loadPopularGames()
     {
-        sleep(3); // Simulate a delay for loading data
         $before = Carbon::now()->subMonths(2)->timestamp;
         $after = Carbon::now()->addMonths(2)->timestamp;
 
         $this->popularGames = Cache::remember('popular-games', 7, function () use ($before, $after) {
             // Step 1: Get the access token
-            $response = Http::post('https://id.twitch.tv/oauth2/token', [
-                'client_id' => env('IGDB_CLIENT_ID'),
-                'client_secret' => env('IGDB_CLIENT_SECRET'),
-                'grant_type' => 'client_credentials',
-            ]);
-
-            $accessToken = $response->json()['access_token'];
+            // $response = Http::post('https://id.twitch.tv/oauth2/token', [
+            //     'client_id' => env('IGDB_CLIENT_ID'),
+            //     'client_secret' => env('IGDB_CLIENT_SECRET'),
+            //     'grant_type' => 'client_credentials',
+            // ]);
 
             // Step 2: Use the access token to fetch popular games
-            return Http::withHeaders([
-                'Client-ID' => env('IGDB_CLIENT_ID'),
-                'Authorization' => 'Bearer ' . $accessToken,
-            ])
+            return Http::withHeaders(config('services.igdb'))
                 ->withBody(
                     "fields name, cover.url, first_release_date, platforms.abbreviation, rating, summary;
             where platforms = (48,49,130,6)
