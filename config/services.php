@@ -38,11 +38,6 @@ return [
     'igdb' => [
         'client_id' => env('IGDB_CLIENT_ID'),
         'client_secret' => env('IGDB_CLIENT_SECRET'),
+        'access_token' => env('IGDB_ACCESS_TOKEN'),
     ],
-    
-    'twitch' => [
-        'client_id' => env('TWITCH_CLIENT_ID'),
-        'client_secret' => env('TWITCH_CLIENT_SECRET'),
-    ],
-
 ];
