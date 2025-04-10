@@ -17,18 +17,20 @@
                 </div>
                 <div class="ml-12">
                     <a href="#" class="block text-base font-semibold leading-tight hover:text-gray-400 mt-4">
-                        {{ $game['name'] }}
+                        {{ $game['name'] ?? 'Unknown Game' }}
                     </a>
                     <div class="text-gray-400 mt-1">
-                        @foreach ($game['platforms'] as $platform)
-                            @if (array_key_exists('abbreviation', $platform))
-                                {{ $platform['abbreviation'] }},
-                            @endif
-                        @endforeach
+                        @if (isset($game['platforms']) && is_array($game['platforms']))
+                            @foreach ($game['platforms'] as $platform)
+                                @if (array_key_exists('abbreviation', $platform))
+                                    {{ $platform['abbreviation'] }},
+                                @endif
+                            @endforeach
+                        @endif
                     </div>
-                    @if (array_key_exists('summary', $game))
+                    @if (isset($game['summary']) && is_string($game['summary']))
                         <p class="mt-6 text-gray-400 hidden lg:block">
-                            {{ Str::limit($game['summary'], 150) ?? '' }}
+                            {{ Str::limit($game['summary'], 150) }}
                         </p>
                     @endif
                 </div>
@@ -36,6 +38,6 @@
         @empty
             <div>
                 loading...
-            </div> 
+            </div>
         @endforelse
     </div>
