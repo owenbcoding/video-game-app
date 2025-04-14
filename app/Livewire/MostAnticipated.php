@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Livewire\Component;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Cache;
 
 class MostAnticipated extends Component
 {
@@ -22,20 +23,20 @@ class MostAnticipated extends Component
         $before = Carbon::now()->subMonths(2)->timestamp;
         $afterFourMonths = Carbon::now()->addMonths(4)->timestamp;
 
-        // $response = Http::post('https://id.twitch.tv/oauth2/token', [
-        //     'client_id' => env('IGDB_CLIENT_ID'),
-        //     'client_secret' => env('IGDB_CLIENT_SECRET'),
-        //     'grant_type' => 'client_credentials',
-        // ]);
+        $this->mostAnticipated = Cache::remember('most-anticipated', 7, function () use ($before, $afterFourMonths) {
 
-        // $accessToken = $response->json()['access_token'];
+            $response = Http::post('https://id.twitch.tv/oauth2/token', [
+                'client_id' => env('IGDB_CLIENT_ID'),
+                'client_secret' => env('IGDB_CLIENT_SECRET'),
+                'grant_type' => 'client_credentials',
+            ]);
+            
+            $accessToken = $response->json()['access_token'];
 
-        // $this->mostAnticipated = Http::withHeaders([
-        //     'Client-ID' => env('IGDB_CLIENT_ID'),
-        //     'Authorization' => 'Bearer ' . $accessToken,
-        // ])
-        $this->mostAnticipated = Http::withHeaders(config('services.igdb'))
-            ->withBody(
+            return Http::withHeaders([ 
+                'Client-ID' => config('services.igdb.client_id'),
+                'Authorization' => 'Bearer ' . $accessToken,
+            ])->withBody(
                 "fields name, cover.url, first_release_date, platforms.abbreviation, rating, rating_count, summary;
                 where platforms = (48,49,130,6)
                 & first_release_date > {$before}
@@ -47,6 +48,8 @@ class MostAnticipated extends Component
             )
             ->post('https://api.igdb.com/v4/games')
             ->json();
+        });
+        
     }
 
 
