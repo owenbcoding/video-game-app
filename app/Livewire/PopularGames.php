@@ -42,7 +42,7 @@ class PopularGames extends Component
             & first_release_date > {$before}
             & first_release_date < {$after};
             sort rating desc;
-            limit 11;",
+            limit 12;",
                     'text/plain'
                 )
                 ->post('https://api.igdb.com/v4/games')
