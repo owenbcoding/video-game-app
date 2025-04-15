@@ -25,8 +25,8 @@ class RecentlyReviewed extends Component
         $this->recentlyReviewed = Cache::remember('recently-reviewed', 7, function () use ($before, $current) {
 
             $response = Http::post('https://id.twitch.tv/oauth2/token', [
-                'client_id' => env('IGDB_CLIENT_ID'),
-                'client_secret' => env('IGDB_CLIENT_SECRET'),
+                'client_id' => config('services.igdb.client_id'),
+                'client_secret' => config('services.igdb.client_secret'),
                 'grant_type' => 'client_credentials',
             ]);
             
