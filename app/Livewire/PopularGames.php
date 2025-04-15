@@ -25,10 +25,14 @@ class PopularGames extends Component
         $this->popularGames = Cache::remember('popular-games', 7, function () use ($before, $after) {
             // Step 1: Get the access token
             $response = Http::post('https://id.twitch.tv/oauth2/token', [
-                'client_id' => env('IGDB_CLIENT_ID'),
-                'client_secret' => env('IGDB_CLIENT_SECRET'),
+                'client_id' => config('services.igdb.client_id'),
+                'client_secret' => config('services.igdb.client_secret'),
                 'grant_type' => 'client_credentials',
             ]);
+
+            if ($response->failed()) {
+                throw new \Exception('Failed to retrieve access token: ' . $response->body());
+            }
             
             $accessToken = $response->json()['access_token'];
             // Step 2: Use the access token to fetch popular games
