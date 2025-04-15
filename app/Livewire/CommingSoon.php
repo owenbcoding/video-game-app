@@ -23,8 +23,8 @@ class CommingSoon extends Component
         $this->comingSoon = Cache::remember('most-anticipated', 7, function () use ($current) {
 
             $response = Http::post('https://id.twitch.tv/oauth2/token', [
-                'client_id' => env('IGDB_CLIENT_ID'),
-                'client_secret' => env('IGDB_CLIENT_SECRET'),
+                'client_id' => config('services.igdb.client_id'),
+                'client_secret' => config('services.igdb.client_secret'),
                 'grant_type' => 'client_credentials',
             ]);
             
