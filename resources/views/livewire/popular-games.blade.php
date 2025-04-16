@@ -30,13 +30,9 @@
                </div>
            </div>
        @empty
-           <div class="flex justify-center items-center">
+           <div wire:loading class="flex justify-center items-center">
                <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-400"></div>
                <span class="ml-2 text-gray-400">Loading...</span>
            </div>
        @endforelse
-       <div wire:loading class="flex justify-center items-center">
-           <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-400"></div>
-           <span class="ml-2 text-gray-400">Loading...</span>
-       </div>
    </div>
