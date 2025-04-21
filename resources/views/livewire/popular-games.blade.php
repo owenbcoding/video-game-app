@@ -30,9 +30,14 @@
                </div>
            </div>
        @empty
-           <div wire:loading class="flex justify-center items-center">
+           <div class="flex justify-center items-center mt-10">
                <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-400"></div>
-               <span class="ml-2 text-gray-400">Loading...</span>
+               <button type="button" class="ml-5 mb-5" disabled>
+                <svg class="mr-3 size-5 animate-spin ..." viewBox="0 0 24 24">
+                  <!-- ... -->
+                </svg>
+                Processing…
+              </button>
            </div>
        @endforelse
    </div>
