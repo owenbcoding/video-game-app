@@ -30,14 +30,25 @@
                </div>
            </div>
        @empty
-           <div class="flex justify-center items-center mt-10">
+           {{-- <div class="flex justify-center items-center mt-10">
                <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-400"></div>
                <button type="button" class="ml-5 mb-5" disabled>
-                <svg class="mr-3 size-5 animate-spin ..." viewBox="0 0 24 24">
-                  <!-- ... -->
-                </svg>
-                Processing…
-              </button>
-           </div>
+                   <svg class="mr-3 size-5 animate-spin ..." viewBox="0 0 24 24">
+                       <!-- ... -->
+                   </svg>
+                   Processing…
+               </button>
+           </div> --}}
+           @foreach (range(1, 12) as $game)
+               <div class="game mt-8">
+                   <div class="relative inline-block">
+                       <div class="bg-gray-800 w-44 h-56"></div>
+                   </div>
+                   <div class="block text-transparent text-lg bg-gray-700 rounded leading-tight mt-4">Title goes here
+                   </div>
+                   <div class="text-gray-400 h-6 text-transparent bg-gray-700 rounded inline-block mt-3">PS4, PC, Switch
+                   </div>
+               </div>
+           @endforeach
        @endforelse
    </div>
