@@ -36,14 +36,24 @@
                 </div>
             </div>
         @empty
-            <div class="flex justify-center items-center mt-10">
-                <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-400"></div>
-                <button type="button" class="ml-5 mb-5" disabled>
-                    <svg class="mr-3 size-5 animate-spin ..." viewBox="0 0 24 24">
-                        <!-- ... -->
-                    </svg>
-                    Processing…
-                </button>
+        @foreach (range(1, 3) as $game)
+        <div class="game bg-gray-800 animate-pulse rounded-lg shadow-md flex px-6 py-6">
+            <div class="relative flex-none">
+                <div class="bg-gray-700 w-32 h-56 lg:h-56 lg:w-48"></div>
             </div>
+            <div class="ml-6 lg:ml-12">
+                <div class="inline-block text-lg font-semibold leading-tight text-transparent bg-gray-700 rounded">Title
+                    goes here</div>
+                <p class="mt-8 space-y-4 hidden lg:block">
+                    <span class="text-transparent bg-gray-700 rounded inline-block">Lorem, ipsum dolor sit amet
+                        consectetur adipisicing elit. Lorem, ipsum.</span>
+                    <span class="text-transparent bg-gray-700 rounded inline-block">Lorem, ipsum dolor sit amet
+                        consectetur adipisicing elit. Lorem, ipsum.</span>
+                    <span class="text-transparent bg-gray-700 rounded inline-block">Lorem, ipsum dolor sit amet
+                        consectetur adipisicing elit. Lorem, ipsum.</span>
+                </p>
+            </div>
+        </div>
+        @endforeach
         @endforelse
     </div>

@@ -30,17 +30,8 @@
                </div>
            </div>
        @empty
-           {{-- <div class="flex justify-center items-center mt-10">
-               <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-400"></div>
-               <button type="button" class="ml-5 mb-5" disabled>
-                   <svg class="mr-3 size-5 animate-spin ..." viewBox="0 0 24 24">
-                       <!-- ... -->
-                   </svg>
-                   Processing…
-               </button>
-           </div> --}}
            @foreach (range(1, 12) as $game)
-               <div class="game mt-8">
+               <div class="game animate-pulse mt-8">
                    <div class="relative inline-block">
                        <div class="bg-gray-800 w-44 h-56"></div>
                    </div>
