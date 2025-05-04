@@ -41,7 +41,7 @@ class PopularGames extends Component
                 'Authorization' => 'Bearer ' . $accessToken,
             ])
                 ->withBody(
-                    "fields name, cover.url, first_release_date, platforms.abbreviation, rating, summary;
+                    "fields name, cover.url, first_release_date, platforms.abbreviation, rating, summary, slug;
             where platforms = (48,49,130,6)
             & first_release_date > {$before}
             & first_release_date < {$after};
