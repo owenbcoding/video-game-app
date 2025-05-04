@@ -13,18 +13,18 @@ class GamesController extends Controller
      */
     public function index()
     {
-        $before = Carbon::now()->subMonths(2)->timestamp;
-        $after = Carbon::now()->addMonths(2)->timestamp;
-        $current = Carbon::now()->timestamp;
-        $afterFourMonths = Carbon::now()->addMonths(4)->timestamp;
+        // $before = Carbon::now()->subMonths(2)->timestamp;
+        // $after = Carbon::now()->addMonths(2)->timestamp;
+        // $current = Carbon::now()->timestamp;
+        // $afterFourMonths = Carbon::now()->addMonths(4)->timestamp;
 
-        $response = Http::post('https://id.twitch.tv/oauth2/token', [
-            'client_id' => env('IGDB_CLIENT_ID'),
-            'client_secret' => env('IGDB_CLIENT_SECRET'),
-            'grant_type' => 'client_credentials',
-        ]);
+        // $response = Http::post('https://id.twitch.tv/oauth2/token', [
+        //     'client_id' => env('IGDB_CLIENT_ID'),
+        //     'client_secret' => env('IGDB_CLIENT_SECRET'),
+        //     'grant_type' => 'client_credentials',
+        // ]);
 
-        $accessToken = $response->json()['access_token'];
+        // $accessToken = $response->json()['access_token'];
 
         // $popularGames = Http::withHeaders([
         //     'Client-ID' => env('IGDB_CLIENT_ID'),
@@ -126,9 +126,35 @@ class GamesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($slug)
     {
-        //
+        $response = Http::post('https://id.twitch.tv/oauth2/token', [
+            'client_id' => env('IGDB_CLIENT_ID'),
+            'client_secret' => env('IGDB_CLIENT_SECRET'),
+            'grant_type' => 'client_credentials',
+        ]);
+
+        $accessToken = $response->json()['access_token'];
+
+        $game = Http::withHeaders([
+            'Client-ID' => env('IGDB_CLIENT_ID'),
+            'Authorization' => 'Bearer ' . $accessToken,
+        ])
+        ->withBody(
+            "fields name, cover.url, first_release_date, platforms.abbreviation, rating, summary;
+            where slug = \"{$slug}\";",
+            'text/plain'
+        )
+        ->post('https://api.igdb.com/v4/games')
+        ->json();
+
+        // dd($game);
+
+        // abort_if(!$game, 404);
+
+        return view('show', [
+            'game' => $game[0],
+        ]);
     }
 
     /**
