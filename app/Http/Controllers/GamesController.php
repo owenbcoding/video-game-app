@@ -141,7 +141,7 @@ class GamesController extends Controller
             'Authorization' => 'Bearer ' . $accessToken,
         ])
         ->withBody(
-            "fields name, cover.url, first_release_date, platforms.abbreviation, rating, summary;
+            "fields name, slug, cover.url, first_release_date, platforms.abbreviation, rating, aggregated_rating, summary, genres.name, involved_companies.company.name, screenshots.url, storyline, videos.video_id;
             where slug = \"{$slug}\";",
             'text/plain'
         )
@@ -154,6 +154,8 @@ class GamesController extends Controller
 
         return view('show', [
             'game' => $game[0],
+            'screenshots' => array_slice($game[0]['screenshots'] ?? [] ?? [], 0, 6),
+            'videos' => $game[0]['videos'] ?? [],
         ]);
     }
 
