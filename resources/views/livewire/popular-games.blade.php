@@ -16,7 +16,8 @@
                        </div>
                    @endif
                </div>
-               <a href="{{ route('games.show', $game['slug'] ?? '') }}" class="block text-base font-semibold leading-tight hover:text-gray-400 mt-4">
+               <a href="{{ route('games.show', $game['slug'] ?? '') }}"
+                   class="block text-base font-semibold leading-tight hover:text-gray-400 mt-4">
                    {{ $game['name'] ?? 'Unknown Game' }}
                </a>
                <div class="text-gray-400 mt-1">
