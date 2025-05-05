@@ -1,28 +1,66 @@
 <x-layouts.app>
     <div class="container mx-auto px-4">
         <div class="game-details border-b border-gray-800 pb-12 flex flex-col lg:flex-row">
-            <div class="flex-none">
-                <img src="{{ Vite::asset('resources/img/ff7.png') }}" alt="cover">
+            <div class="flex-none mt-10">
+                <img src="{{ Str::replace('thumb', 'cover_big', $game['cover']['url'] ?? '') }}" alt="cover">
             </div>
             <div class="lg:ml-12 lg:mr-64">
-                <h2 class="font-semibold text-4xl leading-tight mt-8">Final Fantasy VII Remake</h2>
-                <div class="text-gray-400">
-                    <span>Adventure, RPG</span>
+                <h2 class="font-semibold text-4xl leading-tight mt-8">{{ $game['name'] ?? 'Unknown Genre' }}</h2>
+                <div class="text-gray-400 mt-5">
+                    <span>
+                        @if (isset($game['genres']) && is_array($game['genres']))
+                            @foreach ($game['genres'] as $genre)
+                                {{ $genre['name'] ?? 'Unknown Genre' }}
+                            @endforeach
+                        @else
+                            No genres available
+                        @endif
+                    </span>
                     &middot;
-                    <span>Square Enix</span>
-                    <span>Playstation 4</span>
+                    <span>
+                        <span>
+                            @if (isset($game['involved_companies']) &&
+                                    is_array($game['involved_companies']) &&
+                                    isset($game['involved_companies'][0]['company']['name']))
+                                {{ $game['involved_companies'][0]['company']['name'] }}
+                            @else
+                                Unknown Company
+                            @endif
+                        </span>
+                    </span>
+                    <span>
+                        @if (isset($game['platforms']) && is_array($game['platforms']))
+                            @foreach ($game['platforms'] as $platform)
+                                @if (array_key_exists('abbreviation', $platform))
+                                    {{ $platform['abbreviation'] }},
+                                @endif
+                            @endforeach
+                        @endif
+                    </span>
                 </div>
 
-                <div class="flex flex-wrap items-center mt-1">
+                <div class="flex flex-wrap items-center mt-5">
                     <div class="flex items-center">
                         <div class="w-16 h-16 bg-gray-800 rounded-full">
-                            <div class="font-semibold text-xs flex justify-center items-center h-full">80%</div>
+                            <div class="font-semibold text-xs flex justify-center items-center h-full">
+                                @if (array_key_exists('rating', $game) && is_numeric($game['rating']))
+                                    {{ round($game['rating']) . '%' }}
+                                @else
+                                    0%
+                                @endif
+                            </div>
                         </div>
                         <div class="ml-4 text-xs">Member <br> Score</div>
                     </div>
                     <div class="flex items-center ml-12">
                         <div class="w-16 h-16 bg-gray-800 rounded-full">
-                            <div class="font-semibold text-xs flex justify-center items-center h-full">80%</div>
+                            <div class="font-semibold text-xs flex justify-center items-center h-full">
+                                @if (array_key_exists('aggregated_rating', $game) && is_numeric($game['rating']))
+                                    {{ round($game['aggregated_rating']) . '%' }}
+                                @else
+                                    0%
+                                @endif
+                            </div>
                         </div>
                         <div class="ml-4 text-xs">Critic <br> Score</div>
                     </div>
@@ -70,21 +108,24 @@
 
                 </div>
 
-                <p class="mt-12">
-                    A spectacular re-imagining of the most visionary games ever, Final Fantasy VII Remake
-                    rebuilds and expands the legendary RPG for today. The first game in the project will be
-                    set in electric city of Midgar and presents a fully standalone gaming experience.
+                <p class="mt-4">
+                    {{ Str::limit($game['summary'] ?? 'No summary available.', 250) }}
                 </p>
-                <div class="mt-12">
-                    <button
-                        class="button flex bg-blue-500 text-white font-semibold px-4 py-4 hover:bg-blue-600 rounded transition eas-in-out duration-150">
-                        <svg class="w-6 fill-current" viewBox="0 0 24 24">
-                            <path d="M0 0h24v24H0z" fill="none"></path>
-                            <path
-                                d="M10 16.5l6-4.5-6-4.5v9zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z">
-                            </path>
-                        </svg>
-                        <span class="ml-2">Play Trailer</span></button>
+                <div class="mt-8">
+                    @if (isset($game['videos']) && is_array($game['videos']) && count($game['videos']) > 0)
+                        <a href="https://www.youtube.com/watch?v={{ $game['videos'][0]['video_id'] }}"
+                            class="button inline-flex bg-blue-500 text-white font-semibold px-4 py-4 hover:bg-blue-600 rounded transition ease-in-out duration-150">
+                            <svg class="w-6 fill-current" viewBox="0 0 24 24">
+                                <path d="M0 0h24v24H0z" fill="none"></path>
+                                <path
+                                    d="M10 16.5l6-4.5-6-4.5v9zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z">
+                                </path>
+                            </svg>
+                            <span class="ml-2">Play Trailer</span>
+                        </a>
+                    @else
+                        <p class="text-gray-400">No trailer available.</p>
+                    @endif
                 </div>
             </div>
         </div> <!-- end game-details -->
@@ -92,44 +133,21 @@
         <div class="images-container border-b border-gray-800 pb-12 mt-8">
             <h2 class="text-blue-500 uppercase tracking-wide font-semibold">Images</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mt-8">
-                <div>
-                    <a href="#">
-                        <img src="{{ Vite::asset('resources/img/screenshot1.jpg') }}" alt="screenshot"
-                            class="hover:opacity-75 transition ease-in-out duration-150">
-                    </a>
-                </div>
-                <div>
-                    <a href="#">
-                        <img src="{{ Vite::asset('resources/img/screenshot1.jpg') }}" alt="screenshot"
-                            class="hover:opacity-75 transition ease-in-out duration-150">
-                    </a>
-                </div>
-                <div>
-                    <a href="#">
-                        <img src="{{ Vite::asset('resources/img/screenshot1.jpg') }}" alt="screenshot"
-                            class="hover:opacity-75 transition ease-in-out duration-150">
-                    </a>
-                </div>
-                <div>
-                    <a href="#">
-                        <img src="{{ Vite::asset('resources/img/screenshot1.jpg') }}" alt="screenshot"
-                            class="hover:opacity-75 transition ease-in-out duration-150">
-                    </a>
-                </div>
-                <div>
-                    <a href="#">
-                        <img src="{{ Vite::asset('resources/img/screenshot1.jpg') }}" alt="screenshot"
-                            class="hover:opacity-75 transition ease-in-out duration-150">
-                    </a>
-                </div>
-                <div>
-                    <a href="#">
-                        <img src="{{ Vite::asset('resources/img/screenshot1.jpg') }}" alt="screenshot"
-                            class="hover:opacity-75 transition ease-in-out duration-150">
-                    </a>
-                </div>
+                @if (!empty($screenshots) && is_array($screenshots))
+                    @foreach ($screenshots as $screenshot)
+                        <div>
+                            <a href="#">
+                                <img src="{{ Str::replace('thumb', 'screenshot_big', $screenshot['url'] ?? '') }}"
+                                    alt="screenshot" class="hover:opacity-75 transition ease-in-out duration-150">
+                            </a>
+                        </div>
+                    @endforeach
+                @else
+                    <p class="text-gray-400">No screenshots available.</p>
+                @endif
             </div>
-        </div><!-- end images-container -->
+        </div>
+        <!-- end images-container -->
 
         <div class="images-container mt-8">
             <h2 class="text-blue-500 uppercase tracking-wide font-semibold">Similar games</h2>
@@ -140,14 +158,14 @@
                             <img src="{{ Vite::asset('resources/img/ff7.png') }}" alt="game-cover"
                                 class="hover:opacity-75 transition ease-in-out duration-150 w-full">
                         </a>
-    
+
                         <!-- Score overlay (fixed positioning) -->
                         <div class="absolute bottom-2 right-2 w-16 h-16 bg-gray-800 text-white rounded-full flex items-center justify-center"
                             style="right: -29px; bottom: -29px;">
                             <div class="font-semibold text-xs flex justify-center items-center h-full">80%</div>
                         </div>
                     </div>
-    
+
                     <a href="#" class="block text-base font-semibold leading-tight hover:text-gray-400 mt-4">
                         Final Fantasy VII Remake
                     </a>
@@ -159,14 +177,14 @@
                             <img src="{{ Vite::asset('resources/img/Animal-crossing.png') }}" alt="game-cover"
                                 class="hover:opacity-75 transition ease-in-out duration-150 w-full">
                         </a>
-    
+
                         <!-- Score overlay (fixed positioning) -->
                         <div class="absolute bottom-2 right-2 w-16 h-16 bg-gray-800 text-white rounded-full flex items-center justify-center"
                             style="right: -29px; bottom: -29px;">
                             <div class="font-semibold text-xs flex justify-center items-center h-full">80%</div>
                         </div>
                     </div>
-    
+
                     <a href="#" class="block text-base font-semibold leading-tight hover:text-gray-400 mt-4">
                         Animal Crossing:
                         New Horizons
@@ -179,14 +197,14 @@
                             <img src="{{ Vite::asset('resources/img/doom.png') }}" alt="game-cover"
                                 class="hover:opacity-75 transition ease-in-out duration-150 w-full">
                         </a>
-    
+
                         <!-- Score overlay (fixed positioning) -->
                         <div class="absolute bottom-2 right-2 w-16 h-16 bg-gray-800 text-white rounded-full flex items-center justify-center"
                             style="right: -29px; bottom: -29px;">
                             <div class="font-semibold text-xs flex justify-center items-center h-full">80%</div>
                         </div>
                     </div>
-    
+
                     <a href="#" class="block text-base font-semibold leading-tight hover:text-gray-400 mt-4">
                         Doom Eternal
                     </a>
@@ -198,14 +216,14 @@
                             <img src="{{ Vite::asset('resources/img/ALYX.png') }}" alt="game-cover"
                                 class="hover:opacity-75 transition ease-in-out duration-150 w-full">
                         </a>
-    
+
                         <!-- Score overlay (fixed positioning) -->
                         <div class="absolute bottom-2 right-2 w-16 h-16 bg-gray-800 text-white rounded-full flex items-center justify-center"
                             style="right: -29px; bottom: -29px;">
                             <div class="font-semibold text-xs flex justify-center items-center h-full">80%</div>
                         </div>
                     </div>
-    
+
                     <a href="#" class="block text-base font-semibold leading-tight hover:text-gray-400 mt-4">
                         Half Life: Alyx
                     </a>
@@ -217,14 +235,14 @@
                             <img src="{{ Vite::asset('resources/img/luigis-mansion-3.jpg') }}" alt="game-cover"
                                 class="hover:opacity-75 transition ease-in-out duration-150 w-full">
                         </a>
-    
+
                         <!-- Score overlay (fixed positioning) -->
                         <div class="absolute bottom-2 right-2 w-16 h-16 bg-gray-800 text-white rounded-full flex items-center justify-center"
                             style="right: -29px; bottom: -29px;">
                             <div class="font-semibold text-xs flex justify-center items-center h-full">80%</div>
                         </div>
                     </div>
-    
+
                     <a href="#" class="block text-base font-semibold leading-tight hover:text-gray-400 mt-4">
                         Luigi's Mansion 3
                     </a>
@@ -236,14 +254,14 @@
                             <img src="{{ Vite::asset('resources/img/Resident-evil-3.png') }}" alt="game-cover"
                                 class="hover:opacity-75 transition ease-in-out duration-150 w-full">
                         </a>
-    
+
                         <!-- Score overlay (fixed positioning) -->
                         <div class="absolute bottom-2 right-2 w-16 h-16 bg-gray-800 text-white rounded-full flex items-center justify-center"
                             style="right: -29px; bottom: -29px;">
                             <div class="font-semibold text-xs flex justify-center items-center h-full">80%</div>
                         </div>
                     </div>
-    
+
                     <a href="#" class="block text-base font-semibold leading-tight hover:text-gray-400 mt-4">
                         Resident Evil 3
                     </a>
