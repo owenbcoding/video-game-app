@@ -140,13 +140,13 @@ class GamesController extends Controller
             'Client-ID' => env('IGDB_CLIENT_ID'),
             'Authorization' => 'Bearer ' . $accessToken,
         ])
-        ->withBody(
-            "fields name, slug, cover.url, first_release_date, platforms.abbreviation, rating, aggregated_rating, summary, genres.name, involved_companies.company.name, screenshots.url, storyline, videos.video_id;
+            ->withBody(
+                "fields name, slug, cover.url, first_release_date, platforms.abbreviation, rating, aggregated_rating, summary, genres.name, involved_companies.company.name, screenshots.url, storyline, videos.video_id, similar_games.name, similar_games.cover.url, similar_games.rating, similar_games.platforms.abbreviation;
             where slug = \"{$slug}\";",
-            'text/plain'
-        )
-        ->post('https://api.igdb.com/v4/games')
-        ->json();
+                'text/plain'
+            )
+            ->post('https://api.igdb.com/v4/games')
+            ->json();
 
         // dd($game);
 
@@ -154,8 +154,9 @@ class GamesController extends Controller
 
         return view('show', [
             'game' => $game[0],
-            'screenshots' => array_slice($game[0]['screenshots'] ?? [] ?? [], 0, 6),
+            'screenshots' => array_slice($game[0]['screenshots'] ?? [], 0, 6),
             'videos' => $game[0]['videos'] ?? [],
+            'similarGames' => array_slice($game[0]['similar_games'] ?? [], 0, 6),
         ]);
     }
 
