@@ -4,14 +4,14 @@
            <div class="game mt-8">
                <div class="relative inline-block">
                    <a href="{{ route('games.show', $game['slug'] ?? '') }}">
-                       <img src="{{ Str::replace('thumb', 'cover_big', $game['cover']['url'] ?? '') }}" alt="game-cover"
+                       <img src="{{ $game['coverImageUrl'] }}" alt="game-cover"
                            class="hover:opacity-75 transition ease-in-out duration-150 w-full">
                    </a>
                    @if (isset($game['rating']))
                        <div class="absolute bottom-2 right-2 w-16 h-16 bg-gray-800 text-white rounded-full flex items-center justify-center"
                            style="right: -29px; bottom: -29px;">
                            <div class="font-semibold text-xs flex justify-center items-center h-full">
-                               {{ round($game['rating']) . '%' }}
+                               {{ round($game['rating']) }}
                            </div>
                        </div>
                    @endif
