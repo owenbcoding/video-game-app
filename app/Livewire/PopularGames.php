@@ -6,6 +6,7 @@ use Livewire\Component;
 use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 
 class PopularGames extends Component
 {
@@ -33,10 +34,10 @@ class PopularGames extends Component
             if ($response->failed()) {
                 throw new \Exception('Failed to retrieve access token: ' . $response->body());
             }
-            
+
             $accessToken = $response->json()['access_token'];
             // Step 2: Use the access token to fetch popular games
-            return Http::withHeaders([ 
+            return Http::withHeaders([
                 'Client-ID' => config('services.igdb.client_id'),
                 'Authorization' => 'Bearer ' . $accessToken,
             ])
@@ -52,10 +53,24 @@ class PopularGames extends Component
                 ->post('https://api.igdb.com/v4/games')
                 ->json();
         });
+
+        // dd($this->formatForView($this->popularGames));
+
+        $this->popularGames = $this->formatForView($this->popularGames);
     }
 
     public function render()
     {
         return view('livewire.popular-games');
+    }
+
+    public function formatForView($games)
+    {
+        return collect($games)->map(function ($game) {
+            return collect($game)->merge([
+                'coverImageUrl' => Str::replace('thumb', 'cover_big', $game['cover']['url'] ?? ''),
+                'rating' => isset($game['rating']) ? round($game['rating']) : null
+            ]);
+        })->toArray();
     }
 }
