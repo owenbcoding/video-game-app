@@ -53,14 +53,12 @@ class PopularGames extends Component
                 ->post('https://api.igdb.com/v4/games')
                 ->json();
         });
-
-        // dd($this->formatForView($this->popularGames));
-
-        $this->popularGames = $this->formatForView($this->popularGames);
     }
 
     public function render()
     {
         return view('livewire.popular-games');
     }
+
+    
 }

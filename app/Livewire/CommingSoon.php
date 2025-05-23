@@ -46,22 +46,10 @@ class CommingSoon extends Component
             ->json();
 
         });
-
-        $this->comingSoon = $this->formatForView($this->comingSoon);
     }
 
     public function render()
     {
         return view('livewire.comming-soon');
-    }
-
-    public function formatForView($games)
-    {
-        return collect($games)->map(function ($game) {
-            return collect($game)->merge([
-                'coverImageUrl' => Str::replace('thumb', 'cover_big', $game['cover']['url'] ?? ''),
-                'releaseDate' => Carbon::parse($game['first_release_date'])->format('M d, Y'),
-            ]);
-        })->toArray();
     }
 }
