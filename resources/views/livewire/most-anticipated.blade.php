@@ -9,11 +9,7 @@
                 <div class="ml-4">
                     <a href="#" class="hover:text-gray-300">{{ $game['name'] ?? 'Unknown Game' }}</a>
                     <div class="text-gray-400 text-sm mt-1">
-                        @if (isset($game['first_release_date']))
-                            {{ carbon\Carbon::parse($game['first_release_date'])->format('M d, Y') }}
-                        @else
-                            Release date not available
-                        @endif
+                        {{ carbon\Carbon::parse($game['first_release_date'])->format('M d, Y') }}
                     </div>
                 </div>
             </div>

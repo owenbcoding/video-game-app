@@ -6,6 +6,7 @@ use Livewire\Component;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 
 class MostAnticipated extends Component
 {
@@ -50,11 +51,22 @@ class MostAnticipated extends Component
             ->json();
         });
         
+        $this->mostAnticipated = $this->formatForView($this->mostAnticipated);
     }
 
 
     public function render()
     {
         return view('livewire.most-anticipated');
+    }
+
+    public function formatForView($games)
+    {
+        return collect($games)->map(function ($game) {
+            return collect($game)->merge([
+                'coverImageUrl' => Str::replace('thumb', 'cover_big', $game['cover']['url'] ?? ''),
+                'releaseDate' => Carbon::parse($game['first_release_date'])->format('M d, Y'),
+            ]);
+        })->toArray();
     }
 }

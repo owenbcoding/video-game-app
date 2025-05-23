@@ -20,13 +20,7 @@
                         {{ $game['name'] ?? 'Unknown Game' }}
                     </a>
                     <div class="text-gray-400 mt-1">
-                        @if (isset($game['platforms']) && is_array($game['platforms']))
-                            @foreach ($game['platforms'] as $platform)
-                                @if (array_key_exists('abbreviation', $platform))
-                                    {{ $platform['abbreviation'] }},
-                                @endif
-                            @endforeach
-                        @endif
+                        {{ $game['platforms'] }}
                     </div>
                     @if (isset($game['summary']) && is_string($game['summary']))
                         <p class="mt-6 text-gray-400 hidden lg:block">

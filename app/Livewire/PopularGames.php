@@ -63,14 +63,4 @@ class PopularGames extends Component
     {
         return view('livewire.popular-games');
     }
-
-    public function formatForView($games)
-    {
-        return collect($games)->map(function ($game) {
-            return collect($game)->merge([
-                'coverImageUrl' => Str::replace('thumb', 'cover_big', $game['cover']['url'] ?? ''),
-                'rating' => isset($game['rating']) ? round($game['rating']) : null
-            ]);
-        })->toArray();
-    }
 }
