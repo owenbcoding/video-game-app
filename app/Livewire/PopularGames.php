@@ -23,7 +23,7 @@ class PopularGames extends Component
         $before = Carbon::now()->subMonths(2)->timestamp;
         $after = Carbon::now()->addMonths(2)->timestamp;
 
-        $this->popularGames = Cache::remember('popular-games', 7, function () use ($before, $after) {
+        $popularGamesUnformatted = Cache::remember('popular-games', 7, function () use ($before, $after) {
             // Step 1: Get the access token
             $response = Http::post('https://id.twitch.tv/oauth2/token', [
                 'client_id' => config('services.igdb.client_id'),
@@ -53,6 +53,10 @@ class PopularGames extends Component
                 ->post('https://api.igdb.com/v4/games')
                 ->json();
         });
+
+        // dd($this->formatforview($popularGamesUnformatted));
+
+        $this->popularGames = $this->formatforview($popularGamesUnformatted);
     }
 
     public function render()
@@ -60,5 +64,12 @@ class PopularGames extends Component
         return view('livewire.popular-games');
     }
 
-    
+    public function formatforview($games) 
+    { 
+        return collect($games)->map(function ($game) {
+            return collect($game)->merge([
+                'coverImageUrl' => Str::replaceFirst('thumb', 'cover_big', $game['cover']['url']),
+            ]);
+        });
+    }
 }
