@@ -43,11 +43,11 @@ class PopularGames extends Component
             ])
                 ->withBody(
                     "fields name, cover.url, first_release_date, platforms.abbreviation, rating, summary, slug;
-            where platforms = (48,49,130,6)
-            & first_release_date > {$before}
-            & first_release_date < {$after};
-            sort rating desc;
-            limit 12;",
+             where platforms = (48,49,130,6)
+             & first_release_date > {$before}
+             & first_release_date < {$after};
+             sort rating desc;
+             limit 12;",
                     'text/plain'
                 )
                 ->post('https://api.igdb.com/v4/games')
@@ -64,7 +64,7 @@ class PopularGames extends Component
         return view('livewire.popular-games');
     }
 
-    public function formatforview($games) 
+    public function formatforview($games)
     {
         return collect($games)->map(function ($game) {
             return collect($game)->merge([
