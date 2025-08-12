@@ -187,24 +187,16 @@ class GamesController extends Controller
                 ]);
             })->take(6),
             'social' => [
-                'website' => (isset($game['websites']) && is_array($game['websites']))
-                    ? (collect($game['websites'])->first()['url'] ?? null)
-                    : null,
-                'facebook' => (isset($game['websites']) && is_array($game['websites']))
-                    ? optional(collect($game['websites'])->first(function ($website) {
-                        return Str::contains($website['url'], 'facebook');
-                    }))['url'] ?? null
-                    : null,
-                'twitter' => (isset($game['websites']) && is_array($game['websites']))
-                    ? optional(collect($game['websites'])->first(function ($website) {
-                        return Str::contains($website['url'], 'twitter');
-                    }))['url'] ?? null
-                    : null,
-                'instagram' => (isset($game['websites']) && is_array($game['websites']))
-                    ? optional(collect($game['websites'])->first(function ($website) {
-                        return Str::contains($website['url'], 'instagram');
-                    }))['url'] ?? null
-                    : null,
+                'official_website' => $game['websites'][0]['url'] ?? null,
+                'facebook' => collect($game['websites'] ?? [])->first(function ($website) {
+                    return Str::contains($website['url'], 'facebook');
+                }),
+                'twitter' => collect($game['websites'] ?? [])->first(function ($website) {
+                    return Str::contains($website['url'], 'twitter');
+                }),
+                'instagram' => collect($game['websites'] ?? [])->first(function ($website) {
+                    return Str::contains($website['url'], 'instagram');
+                }),
             ],
         ]);
 
