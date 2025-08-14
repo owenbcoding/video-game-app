@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use illuminate\Support\Str;
+use Illuminate\Support\Str;
 
 class GamesController extends Controller
 {
@@ -142,7 +142,7 @@ class GamesController extends Controller
             'Authorization' => 'Bearer ' . $accessToken,
         ])
             ->withBody(
-                "fields name, slug, cover.url, first_release_date, platforms.abbreviation, rating, aggregated_rating, summary, genres.name, involved_companies.company.name, screenshots.url, storyline, videos.video_id, similar_games.name, similar_games.cover.url, similar_games.rating, similar_games.platforms.abbreviation;
+            "fields name, slug, cover.url, first_release_date, platforms.abbreviation, rating, aggregated_rating, summary, genres.name, involved_companies.company.name, screenshots.url, storyline, videos.video_id, websites.url, websites.category, similar_games.name, similar_games.cover.url, similar_games.rating, similar_games.platforms.abbreviation;
             where slug = \"{$slug}\";",
                 'text/plain'
             )
@@ -153,11 +153,13 @@ class GamesController extends Controller
 
         // abort_if(!$game, 404);
 
+        $formattedGame = $this->formatGameForView($game[0]);
+
         return view('show', [
-            'game' => $this->formatGameForView($game[0]),
+            'game' => $formattedGame,
             'screenshots' => array_slice($game[0]['screenshots'] ?? [], 0, 6),
             'videos' => $game[0]['videos'] ?? [],
-            'similarGames' => array_slice($game[0]['similar_games'] ?? [], 0, 6),
+            'similarGames' => ($formattedGame['similarGames'] ?? collect())->values()->toArray(),
         ]);
     }
 
@@ -167,10 +169,14 @@ class GamesController extends Controller
             'coverImageUrl' => Str::replaceFirst('thumb', 'cover_big', $game['cover']['url']),
             'genres' => collect($game['genres'])->pluck('name')->implode(', '),
             'involvedCompanies' => $game['involved_companies.0.company.name'] ?? null,
-            'platforms' => collect($game['platforms'])->pluck('abbreviation')->implode(', '),
-            'memberRating' => array_key_exists('rating', $game) ? round($game['rating']) . '%' : '0%',
-            'criticRating' => array_key_exists('aggregated_rating', $game) ? round($game['aggregated_rating']) . '%' : '0%',
-            'trailer' => 'https://www.youtube.com/watch/' . $game['videos'][0]['video_id'],
+            'platforms' => array_key_exists('platforms', $game)
+                ? collect($game['platforms'])->pluck('abbreviation')->implode(', ')
+                : null,
+            'memberRating' => array_key_exists('rating', $game) ? round((float) $game['rating']) . '%' : '0%',
+            'criticRating' => array_key_exists('aggregated_rating', $game) ? round((float) $game['aggregated_rating']) . '%' : '0%',
+            'trailer' => (isset($game['videos']) && is_array($game['videos']) && isset($game['videos'][0]['video_id']))
+                ? 'https://www.youtube.com/watch/' . $game['videos'][0]['video_id']
+                : null,
             'screenshots' => isset($game['screenshots']) && is_array($game['screenshots'])
                 ? collect($game['screenshots'])->map(function ($screenshot) {
                     return [
@@ -182,21 +188,23 @@ class GamesController extends Controller
             'similarGames' => collect($game['similar_games'])->map(function ($game) {
                 return collect($game)->merge([
                     'coverImageUrl' => array_key_exists('cover', $game) ? Str::replaceFirst('thumb', 'cover_big', $game['cover']['url']) : 'https://via.placeholder.com/264x352',
-                    'rating' => isset($game['rating']) ? round($game['rating']) . '%' : null,
+                    'rating' => isset($game['rating']) ? round((float) $game['rating']) . '%' : null,
                     'platforms' => array_key_exists('platforms', $game) ? collect($game['platforms'])->pluck('abbreviation')->implode(', ') : null
                 ]);
             })->take(6),
             'social' => [
-                'official_website' => $game['websites'][0]['url'] ?? null,
-                'facebook' => collect($game['websites'] ?? [])->first(function ($website) {
-                    return Str::contains($website['url'], 'facebook');
-                }),
-                'twitter' => collect($game['websites'] ?? [])->first(function ($website) {
-                    return Str::contains($website['url'], 'twitter');
-                }),
-                'instagram' => collect($game['websites'] ?? [])->first(function ($website) {
-                    return Str::contains($website['url'], 'instagram');
-                }),
+                'official_website' => (isset($game['websites']) && is_array($game['websites']))
+                    ? collect($game['websites'])->firstWhere('category', 1)
+                    : null,
+                'facebook' => (isset($game['websites']) && is_array($game['websites']))
+                    ? collect($game['websites'])->firstWhere('category', 4)
+                    : null,
+                'twitter' => (isset($game['websites']) && is_array($game['websites']))
+                    ? collect($game['websites'])->firstWhere('category', 5)
+                    : null,
+                'instagram' => (isset($game['websites']) && is_array($game['websites']))
+                    ? collect($game['websites'])->firstWhere('category', 8)
+                    : null,
             ],
         ]);
 
